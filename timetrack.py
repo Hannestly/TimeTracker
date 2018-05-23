@@ -5,12 +5,11 @@ import matplotlib.pyplot as plt
 
 window = tk.Tk()
 window.title("Time Tracker")
-window.geometry("400x400")
+window.geometry("400x200")
 
 
 #---global varialbles --#
-timeLine = time.time()
-timeStamps = [timeLine]
+timeStamps = []
 
 workSeg = []
 leisureSeg = []
@@ -22,6 +21,7 @@ breakStat = False
 
 #--funcitons--#
 def startWork():
+
     global leisureStat
     global leisureSeg
     global breakStat
@@ -31,10 +31,14 @@ def startWork():
     global timeStamps
     global timeLine
 
+    if leisureStat == False and breakStat == False and workStat == False:
+        timeLine = time.time()
+        timeStamps.append(timeLine)
+
     newTime = time.time()
     #time it took
     resultTime = newTime - timeStamps[len(timeStamps)-1]
-    testLabel.config(text= resultTime)
+    testLabel.config(text= "Working")
 
     timeStamps.append(newTime)
 
@@ -61,10 +65,14 @@ def startLeisure():
     global timeStamps
     global timeLine
 
+    if leisureStat == False and breakStat == False and workStat == False:
+        timeLine = time.time()
+        timeStamps.append(timeLine)
+
     newTime = time.time()
     #time it took
     resultTime = newTime - timeStamps[len(timeStamps)-1]
-    testLabel.config(text= resultTime)
+    testLabel.config(text= "On Leisure")
 
     timeStamps.append(newTime)
 
@@ -90,11 +98,16 @@ def startBreak():
     global workSeg
     global timeStamps
     global timeLine
+    
 
+    if leisureStat == False and breakStat == False and workStat == False:
+        timeLine = time.time()
+        timeStamps.append(timeLine)
+        
     newTime = time.time()
     #time it took
     resultTime = newTime - timeStamps[len(timeStamps)-1]
-    testLabel.config(text= resultTime)
+    testLabel.config(text= "On break")
 
     timeStamps.append(newTime)
 
@@ -141,20 +154,19 @@ def endSession():
     
     print("work percentage {}, leisure percentage {}, break percentage{}".format(workPercent,leisurePercent,breakPercent))
 
-    testLabel.config(text='Session Total time = {} \
-    \n Total working hours = {} \n Total Leisure hours = {} \
-    \n Total Break hours = {}'.format(totalTime,totalWork,totalLeisure,totalBreak))
+    testLabel.config(text="Today's Session has ended")
 
     labels = ['Work','Leisure','Break']
     sizes = [workPercent,leisurePercent,breakPercent]
     fig1,ax1 =plt.subplots()
     ax1.pie(sizes,labels=labels,autopct='%1.1f%%',shadow=True,startangle=90)
     ax1.axis('equal')
+    plt.title("Breakdown of today's session")
     plt.show()
 
 
 #--test label --#
-testLabel = tk.Label(text= "time display")
+testLabel = tk.Label(text= "Start by seleting your current activity")
 testLabel.pack()
 
 #--Work Button --#
